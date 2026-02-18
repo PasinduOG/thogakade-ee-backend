@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/thogakade_db?createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3306/thogakade?createDatabaseIfNotExist=true
     username: root
-    password: PasinduDev678
+    password: ${DB_PASS}
 
   flyway:
     enabled: true
