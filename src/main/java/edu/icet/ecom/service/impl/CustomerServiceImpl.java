@@ -31,14 +31,13 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerDto getCustomerById(String id) {
-        CustomerDto dto = mapper.map(repository.getCustomerById(id), CustomerDto.class);
-        if (dto == null) throw new ResourceNotFoundException("Customer not found with ID: " + id);
-        return dto;
+        return mapper.map(repository.getCustomerById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Customer not found with ID: " + id)), CustomerDto.class);
     }
 
     @Override
     public void updateCustomer(CustomerDto customerDto, String id) {
-        if (repository.getCustomerById(id) == null)
+        if (repository.getCustomerById(id).isEmpty())
             throw new ResourceNotFoundException("Customer not found with ID: " + id);
         customerDto.setId(id);
         repository.updateCustomer(mapper.map(customerDto, CustomerEntity.class));
@@ -46,7 +45,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void deleteCustomer(String id) {
-        if (repository.getCustomerById(id) == null)
+        if (repository.getCustomerById(id).isEmpty())
             throw new ResourceNotFoundException("Customer not found with ID: " + id);
         repository.deleteCustomer(id);
 

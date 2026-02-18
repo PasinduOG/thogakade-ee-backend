@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -13,7 +13,7 @@ public class CustomerEntity {
     private String id;
     private String title;
     private String name;
-    private Date dob;
+    private LocalDate dob;
     private Double salary;
     private String address;
     private String city;

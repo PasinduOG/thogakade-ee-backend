@@ -3,7 +3,7 @@ package edu.icet.ecom.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -11,7 +11,7 @@ public class CustomerDto {
     private String id;
     private String title;
     private String name;
-    private Date dob;
+    private LocalDate dob;
     private Double salary;
     private String address;
     private String city;
