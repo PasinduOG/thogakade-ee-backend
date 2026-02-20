@@ -19,8 +19,10 @@ public class CustomerServiceImpl implements CustomerService {
     private final ModelMapper mapper;
 
     @Override
-    public void createCustomer(CustomerDto customerDto) {
-        repository.addCustomer(mapper.map(customerDto, CustomerEntity.class));
+    public String createCustomer(CustomerDto customerDto) {
+        boolean b = repository.addCustomer(mapper.map(customerDto, CustomerEntity.class));
+        if (!b) return "Failed to add customer";
+        return "Customer created";
     }
 
     @Override
@@ -36,18 +38,21 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void updateCustomer(CustomerDto customerDto, String id) {
+    public String updateCustomer(CustomerDto customerDto, String id) {
         if (repository.getCustomerById(id).isEmpty())
             throw new ResourceNotFoundException("Customer not found with ID: " + id);
         customerDto.setId(id);
-        repository.updateCustomer(mapper.map(customerDto, CustomerEntity.class));
+        boolean b = repository.updateCustomer(mapper.map(customerDto, CustomerEntity.class));
+        if (!b) return "Failed to update customer";
+        return "Customer updated";
     }
 
     @Override
-    public void deleteCustomer(String id) {
+    public String deleteCustomer(String id) {
         if (repository.getCustomerById(id).isEmpty())
             throw new ResourceNotFoundException("Customer not found with ID: " + id);
-        repository.deleteCustomer(id);
-
+        boolean b = repository.deleteCustomer(id);
+        if (!b) return "Failed to remove customer";
+        return "Customer removed";
     }
 }

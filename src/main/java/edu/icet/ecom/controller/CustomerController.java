@@ -14,36 +14,34 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/customers")
 @RequiredArgsConstructor
+@CrossOrigin
 @SuppressWarnings("unused")
 public class CustomerController {
     private final CustomerService service;
 
     @GetMapping
-    ResponseEntity<@NotNull ApiResponse<List<CustomerDto>>> getAllCustomers(){
+    ResponseEntity<@NotNull ApiResponse<List<CustomerDto>>> getAllCustomers() {
         List<CustomerDto> customers = service.getAllCustomers();
         return ApiResponse.success(customers.size() + " found", customers);
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<@NotNull ApiResponse<CustomerDto>> getCustomerById(@PathVariable String id){
+    ResponseEntity<@NotNull ApiResponse<CustomerDto>> getCustomerById(@PathVariable String id) {
         return ApiResponse.success("Customer found", service.getCustomerById(id));
     }
 
     @PostMapping
-    ResponseEntity<@NotNull ApiResponse<Void>> createCustomer(@RequestBody CustomerDto customerDto){
-        service.createCustomer(customerDto);
-        return ApiResponse.status("Customer created successfully", HttpStatus.CREATED);
+    ResponseEntity<@NotNull ApiResponse<Void>> createCustomer(@RequestBody CustomerDto customerDto) {
+        return ApiResponse.status(service.createCustomer(customerDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<@NotNull ApiResponse<Void>> updateCustomer(@RequestBody CustomerDto customerDto, @PathVariable String id){
-        service.updateCustomer(customerDto, id);
-        return ApiResponse.success("Customer updated successfully");
+    ResponseEntity<@NotNull ApiResponse<Void>> updateCustomer(@RequestBody CustomerDto customerDto, @PathVariable String id) {
+        return ApiResponse.success(service.updateCustomer(customerDto, id));
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<@NotNull ApiResponse<Void>> deleteCustomer(@PathVariable String id){
-        service.deleteCustomer(id);
-        return ApiResponse.success("Customer removed successfully");
+    ResponseEntity<@NotNull ApiResponse<Void>> deleteCustomer(@PathVariable String id) {
+        return ApiResponse.success(service.deleteCustomer(id));
     }
 }

@@ -5,13 +5,13 @@ import edu.icet.ecom.dto.CustomerDto;
 import java.util.List;
 
 public interface CustomerService {
-    void createCustomer(CustomerDto customerDto);
+    String createCustomer(CustomerDto customerDto);
 
     List<CustomerDto> getAllCustomers();
 
     CustomerDto getCustomerById(String id);
 
-    void updateCustomer(CustomerDto customerDto, String id);
+    String updateCustomer(CustomerDto customerDto, String id);
 
-    void deleteCustomer(String id);
+    String deleteCustomer(String id);
 }
