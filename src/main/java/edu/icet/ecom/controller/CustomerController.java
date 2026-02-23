@@ -21,13 +21,17 @@ public class CustomerController {
 
     @GetMapping
     ResponseEntity<@NotNull ApiResponse<List<CustomerDto>>> getAllCustomers() {
-        List<CustomerDto> customers = service.getAllCustomers();
-        return ApiResponse.success(customers.size() + " found", customers);
+        return ApiResponse.success(service.getAllCustomers().size() + " found", service.getAllCustomers());
     }
 
     @GetMapping("/{id}")
     ResponseEntity<@NotNull ApiResponse<CustomerDto>> getCustomerById(@PathVariable String id) {
         return ApiResponse.success("Customer found", service.getCustomerById(id));
+    }
+
+    @GetMapping("/get-customer-id")
+    String getGeneratedId(){
+        return service.generateCustomerId();
     }
 
     @PostMapping

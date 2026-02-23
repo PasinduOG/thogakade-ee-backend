@@ -5,6 +5,8 @@ import edu.icet.ecom.dto.CustomerDto;
 import java.util.List;
 
 public interface CustomerService {
+    String generateCustomerId();
+
     String createCustomer(CustomerDto customerDto);
 
     List<CustomerDto> getAllCustomers();
