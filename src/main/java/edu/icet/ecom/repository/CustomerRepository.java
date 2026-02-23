@@ -11,4 +11,5 @@ public interface CustomerRepository {
     boolean deleteCustomer(String id);
     List<CustomerEntity> getAll();
     Optional<CustomerEntity> getCustomerById(String id);
+    String getLastCustomerId();
 }

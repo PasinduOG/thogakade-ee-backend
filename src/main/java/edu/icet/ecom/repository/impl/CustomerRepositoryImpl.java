@@ -3,6 +3,7 @@ package edu.icet.ecom.repository.impl;
 import edu.icet.ecom.entity.CustomerEntity;
 import edu.icet.ecom.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -56,39 +57,49 @@ public class CustomerRepositoryImpl implements CustomerRepository {
         String sql = "SELECT * FROM customer";
         return template.query(sql, (rs, rowNum) -> {
             CustomerEntity entity = new CustomerEntity();
-            entity.setId(rs.getString(1));
-            entity.setTitle(rs.getString(2));
-            entity.setName(rs.getString(3));
-            entity.setDob(rs.getDate(4).toLocalDate());
-            entity.setSalary(rs.getDouble(5));
-            entity.setAddress(rs.getString(6));
-            entity.setCity(rs.getString(7));
-            entity.setProvince(rs.getString(8));
-            entity.setPostalCode(rs.getString(9));
+            entity.setId(rs.getString("CustID"));
+            entity.setTitle(rs.getString("CustTitle"));
+            entity.setName(rs.getString("CustName"));
+            entity.setDob(rs.getDate("DOB"));
+            entity.setSalary(rs.getDouble("salary"));
+            entity.setAddress(rs.getString("CustAddress"));
+            entity.setCity(rs.getString("City"));
+            entity.setProvince(rs.getString("Province"));
+            entity.setPostalCode(rs.getString("PostalCode"));
             return entity;
         });
     }
 
     @Override
     public Optional<CustomerEntity> getCustomerById(String id) {
-        try{
+        try {
             String sql = "SELECT * FROM customer WHERE CustID=?";
             CustomerEntity customerEntity = template.queryForObject(sql, (rs, rowNum) -> {
                 CustomerEntity entity = new CustomerEntity();
-                entity.setId(rs.getString(1));
-                entity.setTitle(rs.getString(2));
-                entity.setName(rs.getString(3));
-                entity.setDob(rs.getDate(4).toLocalDate());
-                entity.setSalary(rs.getDouble(5));
-                entity.setAddress(rs.getString(6));
-                entity.setCity(rs.getString(7));
-                entity.setProvince(rs.getString(8));
-                entity.setPostalCode(rs.getString(9));
+                entity.setId(rs.getString("CustID"));
+                entity.setTitle(rs.getString("CustTitle"));
+                entity.setName(rs.getString("CustName"));
+                entity.setDob(rs.getDate("DOB"));
+                entity.setSalary(rs.getDouble("salary"));
+                entity.setAddress(rs.getString("CustAddress"));
+                entity.setCity(rs.getString("City"));
+                entity.setProvince(rs.getString("Province"));
+                entity.setPostalCode(rs.getString("PostalCode"));
                 return entity;
             }, id);
             return Optional.ofNullable(customerEntity);
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             return Optional.empty();
+        }
+    }
+
+    @Override
+    public String getLastCustomerId() {
+        String sql = "SELECT CustID from Customer ORDER BY CustID DESC LIMIT 1";
+        try {
+            return template.queryForObject(sql, (rs, rowNum) -> rs.getString("CustID"));
+        } catch (EmptyResultDataAccessException e) {
+            return null;
         }
     }
 }

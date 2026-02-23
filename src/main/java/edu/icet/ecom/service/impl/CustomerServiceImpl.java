@@ -19,6 +19,14 @@ public class CustomerServiceImpl implements CustomerService {
     private final ModelMapper mapper;
 
     @Override
+    public String generateCustomerId() {
+        String lastCustomerId = repository.getLastCustomerId();
+        if (lastCustomerId == null) return "C0001";
+        int lastIndex = Integer.parseInt(lastCustomerId.substring(1));
+        return String.format("C%04d", lastIndex + 1);
+    }
+
+    @Override
     public String createCustomer(CustomerDto customerDto) {
         boolean b = repository.addCustomer(mapper.map(customerDto, CustomerEntity.class));
         if (!b) return "Failed to add customer";
