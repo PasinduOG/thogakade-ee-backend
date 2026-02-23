@@ -21,9 +21,9 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public String generateCustomerId() {
         String lastCustomerId = repository.getLastCustomerId();
-        if (lastCustomerId == null) return "C0001";
+        if (lastCustomerId == null) return "C001";
         int lastIndex = Integer.parseInt(lastCustomerId.substring(1));
-        return String.format("C%04d", lastIndex + 1);
+        return String.format("C%03d", lastIndex + 1);
     }
 
     @Override

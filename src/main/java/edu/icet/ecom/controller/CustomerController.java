@@ -3,6 +3,7 @@ package edu.icet.ecom.controller;
 import edu.icet.ecom.dto.CustomerDto;
 import edu.icet.ecom.service.CustomerService;
 import io.github.og4dev.dto.ApiResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
@@ -35,12 +36,12 @@ public class CustomerController {
     }
 
     @PostMapping
-    ResponseEntity<@NotNull ApiResponse<Void>> createCustomer(@RequestBody CustomerDto customerDto) {
+    ResponseEntity<@NotNull ApiResponse<Void>> createCustomer(@Valid @RequestBody CustomerDto customerDto) {
         return ApiResponse.status(service.createCustomer(customerDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<@NotNull ApiResponse<Void>> updateCustomer(@RequestBody CustomerDto customerDto, @PathVariable String id) {
+    ResponseEntity<@NotNull ApiResponse<Void>> updateCustomer(@Valid @RequestBody CustomerDto customerDto, @PathVariable String id) {
         return ApiResponse.success(service.updateCustomer(customerDto, id));
     }
 
