@@ -18,8 +18,8 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 
     @Override
     public boolean addCustomer(CustomerEntity customerEntity) {
-        String sql = "INSERT INTO customer VALUES (?,?,?,?,?,?,?,?,?)";
-        return template.update(sql, customerEntity.getId(),
+        return template.update("INSERT INTO customer VALUES (?,?,?,?,?,?,?,?,?)",
+                customerEntity.getId(),
                 customerEntity.getTitle(),
                 customerEntity.getName(),
                 customerEntity.getDob(),
@@ -32,9 +32,9 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 
     @Override
     public boolean updateCustomer(CustomerEntity customerEntity) {
-        String sql = "UPDATE customer SET CustTitle=?, CustName=?, DOB=?, salary=?, CustAddress=?, City=?, Province=?, " +
-                "PostalCode=? WHERE CustID=?";
-        return template.update(sql, customerEntity.getTitle(),
+        return template.update("UPDATE customer SET CustTitle=?, CustName=?, DOB=?, salary=?, CustAddress=?, " +
+                        "City=?, Province=?, PostalCode=? WHERE CustID=?",
+                customerEntity.getTitle(),
                 customerEntity.getName(),
                 customerEntity.getDob(),
                 customerEntity.getSalary(),
@@ -48,14 +48,12 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 
     @Override
     public boolean deleteCustomer(String id) {
-        String sql = "DELETE FROM customer WHERE CustID=?";
-        return template.update(sql, id) > 0;
+        return template.update("DELETE FROM customer WHERE CustID=?", id) > 0;
     }
 
     @Override
     public List<CustomerEntity> getAll() {
-        String sql = "SELECT * FROM customer";
-        return template.query(sql, (rs, rowNum) -> {
+        return template.query("SELECT * FROM customer", (rs, rowNum) -> {
             CustomerEntity entity = new CustomerEntity();
             entity.setId(rs.getString("CustID"));
             entity.setTitle(rs.getString("CustTitle"));
@@ -73,8 +71,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     @Override
     public Optional<CustomerEntity> getCustomerById(String id) {
         try {
-            String sql = "SELECT * FROM customer WHERE CustID=?";
-            CustomerEntity customerEntity = template.queryForObject(sql, (rs, rowNum) -> {
+            CustomerEntity customerEntity = template.queryForObject("SELECT * FROM customer WHERE CustID=?", (rs, rowNum) -> {
                 CustomerEntity entity = new CustomerEntity();
                 entity.setId(rs.getString("CustID"));
                 entity.setTitle(rs.getString("CustTitle"));
@@ -95,9 +92,9 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 
     @Override
     public String getLastCustomerId() {
-        String sql = "SELECT CustID from Customer ORDER BY CustID DESC LIMIT 1";
         try {
-            return template.queryForObject(sql, (rs, rowNum) -> rs.getString("CustID"));
+            return template.queryForObject("SELECT CustID from Customer ORDER BY CustID DESC LIMIT 1",
+                    (rs, rowNum) -> rs.getString("CustID"));
         } catch (EmptyResultDataAccessException e) {
             return null;
         }

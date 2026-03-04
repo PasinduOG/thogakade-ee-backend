@@ -2,12 +2,10 @@ package edu.icet.ecom.controller;
 
 import edu.icet.ecom.dto.CustomerDto;
 import edu.icet.ecom.service.CustomerService;
-import io.github.og4dev.dto.ApiResponse;
+import io.github.og4dev.annotation.AutoResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,18 +14,19 @@ import java.util.List;
 @RequestMapping("/api/customers")
 @RequiredArgsConstructor
 @CrossOrigin
+@AutoResponse
 @SuppressWarnings("unused")
 public class CustomerController {
     private final CustomerService service;
 
     @GetMapping
-    ResponseEntity<@NotNull ApiResponse<List<CustomerDto>>> getAllCustomers() {
-        return ApiResponse.success(service.getAllCustomers().size() + " found", service.getAllCustomers());
+    List<CustomerDto> getAllCustomers() {
+        return service.getAllCustomers();
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<@NotNull ApiResponse<CustomerDto>> getCustomerById(@PathVariable String id) {
-        return ApiResponse.success("Customer found", service.getCustomerById(id));
+    CustomerDto getCustomerById(@PathVariable String id) {
+        return service.getCustomerById(id);
     }
 
     @GetMapping("/get-customer-id")
@@ -36,17 +35,21 @@ public class CustomerController {
     }
 
     @PostMapping
-    ResponseEntity<@NotNull ApiResponse<Void>> createCustomer(@Valid @RequestBody CustomerDto customerDto) {
-        return ApiResponse.status(service.createCustomer(customerDto), HttpStatus.CREATED);
+    @ResponseStatus(HttpStatus.CREATED)
+    @AutoResponse(message = "Customer created successfully")
+    String createCustomer(@Valid @RequestBody CustomerDto customerDto) {
+        return service.createCustomer(customerDto);
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<@NotNull ApiResponse<Void>> updateCustomer(@Valid @RequestBody CustomerDto customerDto, @PathVariable String id) {
-        return ApiResponse.success(service.updateCustomer(customerDto, id));
+    @AutoResponse(message = "Customer updated successfully")
+    String updateCustomer(@Valid @RequestBody CustomerDto customerDto, @PathVariable String id) {
+        return service.updateCustomer(customerDto, id);
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<@NotNull ApiResponse<Void>> deleteCustomer(@PathVariable String id) {
-        return ApiResponse.success(service.deleteCustomer(id));
+    @AutoResponse(message = "Customer deleted successfully")
+    String deleteCustomer(@PathVariable String id) {
+        return service.deleteCustomer(id);
     }
 }

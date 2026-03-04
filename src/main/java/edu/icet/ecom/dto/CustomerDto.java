@@ -1,10 +1,11 @@
 package edu.icet.ecom.dto;
 
+import io.github.og4dev.annotation.AutoTrim;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -16,17 +17,18 @@ public class CustomerDto {
     @NotBlank(message = "Title is required")
     private String title;
 
+    @AutoTrim
     @NotBlank(message = "Name is required")
     private String name;
 
     @NotNull(message = "Date of Birth is required")
     @Past(message = "Date of Birth must be a past date")
-    private Date dob;
+    private LocalDate dob;
 
-    @NotNull(message = "Salary is required")
-    @PositiveOrZero(message = "Salary cannot be negative")
+    @Positive(message = "Salary is required and cannot be negative")
     private Double salary;
 
+    @AutoTrim
     @NotBlank(message = "Address is required")
     private String address;
 
@@ -36,7 +38,6 @@ public class CustomerDto {
     @NotBlank(message = "Province is required")
     private String province;
 
-    @NotBlank(message = "Postal code is required")
-    @Pattern(regexp = "^\\d{5}$", message = "Postal code must be exactly 5 digits")
+    @Pattern(regexp = "^\\d{5}$", message = "Postal code is required and must be exactly 5 digits")
     private String postalCode;
 }
